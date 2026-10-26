@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Drop a CSV. See what's inside.">
+  <title>CloudCSV — Drop a CSV. See what's inside.</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="menubar">
+    <div class="menu-left">
+      <span class="logo">C</span>
+      <a href="#upload">Upload</a><a href="#results">Results</a><a href="#top">Help</a>
+    </div>
+    <b class="menu-title">~/cloudcsv</b>
+    <span id="clockTop">—</span>
+  </header>
+
+  <div class="desktop" id="top">
+    <!-- left widgets -->
+    <aside class="side">
+      <div class="box widget">
+        <div class="clock" id="clock">--:--</div>
+        <div class="date" id="date">—</div>
+        <div class="bar"><span>max</span><i style="--v:100%"></i></div>
+        <div class="bar"><span>type</span><i style="--v:35%"></i></div>
+      </div>
+      <div class="box widget note">CSV only<br>Up to 10 MB<br>Output: JSON</div>
+    </aside>
+
+    <!-- centre windows -->
+    <main class="stack">
+      <section class="win" id="upload">
+        <div class="win-bar"><i></i><i></i><b>~/upload — cloudcsv</b></div>
+        <div class="win-body">
+          <div class="intro">
+            <h1>Drop a CSV.<br>See what's inside.</h1>
+            <p>Rows, columns and gaps at a glance.</p>
+          </div>
+          <div class="row">
+            <h2>Upload a CSV</h2>
+            <span class="pill" id="modePill">Local demo mode</span>
+          </div>
+          <label class="dropzone" id="dropzone" for="fileInput">
+            <span class="drop-icon">↑</span>
+            <strong id="dropTitle">Choose a CSV file</strong>
+            <span class="drop-help">or drag and drop it here</span>
+            <span class="button">Browse files</span>
+            <small>CSV only · max 10 MB</small>
+          </label>
+          <input id="fileInput" type="file" accept=".csv,text/csv" hidden>
+          <div class="selected-file box hidden" id="selectedFile"></div>
+          <button class="button primary full" id="processBtn" disabled>Analyze file <span>→</span></button>
+          <div class="notice" id="notice" role="status">Choose a CSV file to begin.</div>
+        </div>
+      </section>
+
+      <section class="win" id="results">
+        <div class="win-bar"><i></i><i></i><b>~/results — cloudcsv</b></div>
+        <div class="win-body">
+          <div class="row">
+            <h2>Results</h2>
+            <span class="pill neutral" id="statusPill">Waiting for file</span>
+          </div>
+          <div class="empty-state box" id="emptyState">
+            <div class="empty-illustration"><i></i><i></i><i></i></div>
+            <strong>Nothing here yet</strong>
+            <span>Upload a CSV to see its structure.</span>
+          </div>
+          <div id="reportArea" class="hidden">
+            <div class="metrics">
+              <div class="metric box"><span>Rows</span><strong id="rowCount">—</strong></div>
+              <div class="metric box"><span>Columns</span><strong id="columnCount">—</strong></div>
+              <div class="metric box accent"><span>Output</span><strong class="json-label">JSON</strong></div>
+            </div>
+            <div class="report-head">
+              <div><span class="section-kicker"></span><h3>Filled cells per column</h3></div>
+              <button class="text-button" id="downloadBtn">Download JSON ↓</button>
+            </div>
+            <div id="columnList" class="column-list box"></div>
+            <details class="json-details"><summary>View raw JSON</summary><pre id="rawJson"></pre></details>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">CloudCSV · simple visibility for messy files.</footer>
+    </main>
+
+    <!-- right desktop icons -->
+    <nav class="icons" aria-label="Shortcuts">
+      <a class="icon" href="#upload"><span class="glyph">▣</span>Upload</a>
+      <a class="icon" href="#results"><span class="glyph">▤</span>Results</a>
+      <a class="icon" href="#results"><span class="glyph">↓</span>Download</a>
+    </nav>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+  <script>
+    (function(){
+      function tick(){
+        var d=new Date();
+        var t=d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+        var day=d.toLocaleDateString([], {weekday:'short',month:'short',day:'numeric'});
+        document.getElementById('clock').textContent=t;
+        document.getElementById('date').textContent=day;
+        document.getElementById('clockTop').textContent=day+'  '+t;
+      }
+      tick(); setInterval(tick,30000);
+    })();
+  </script>
+</body>
+</html>
